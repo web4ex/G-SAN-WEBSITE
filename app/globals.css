@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: hsl(354 100% 45%);
+    --color-secondary: hsl(0 0% 96%);
+}
+
+:root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+
+    /* Bold Red */
+    --primary: 354 100% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
+
+    --radius: 0.5rem;
+}
+
+body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,9 @@
+node_modules
+.next
+.vscode
+.env.local
+.env
+build
+dist
+.DS_Store
+Thumbs.db
