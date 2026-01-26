@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     eslint: {
@@ -7,8 +9,11 @@ const nextConfig = {
         ignoreBuildErrors: true,
     },
     images: {
-        unoptimized: true,
+        unoptimized: true
     },
-}
+    // Ensure consistent builds
+    swcMinify: true,
+    reactStrictMode: true,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
