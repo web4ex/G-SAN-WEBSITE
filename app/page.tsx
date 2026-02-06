@@ -1,9 +1,91 @@
 "use client"
 
-import { Mail, Phone, MapPin, CheckCircle, Wrench, Thermometer, Wind, ShieldCheck, Clock, Droplets, ChevronDown, Award } from 'lucide-react'
+import { Mail, Phone, MapPin, CheckCircle, Wrench, Thermometer, Wind, ShieldCheck, Clock, Droplets, ChevronDown, Award, PencilRuler, Bath, Compass, RefreshCw } from 'lucide-react'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
+
+const ProjectCard = ({ project }: { project: any }) => {
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        if (!project.images || project.images.length <= 1) return;
+        const timer = setInterval(() => {
+            setIndex((prev) => (prev + 1) % project.images.length);
+        }, 4000);
+        return () => clearInterval(timer);
+    }, [project.images]);
+
+    return (
+        <motion.div
+            whileHover={{ y: -10 }}
+            className="min-w-[85vw] md:min-w-[400px] h-[500px] relative rounded-3xl overflow-hidden snap-center group cursor-pointer border border-zinc-100 shadow-xl"
+        >
+            {project.images ? (
+                project.images.map((media: string, i: number) => (
+                    <div
+                        key={i}
+                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${i === index ? 'opacity-100' : 'opacity-0'}`}
+                    >
+                        {media.endsWith('.mp4') ? (
+                            <video
+                                src={media}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <Image
+                                src={media}
+                                alt={project.title}
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                        )}
+                    </div>
+                ))
+            ) : (
+                <Image
+                    src={project.img}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+            )}
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-10"></div>
+
+            <div className="absolute bottom-0 left-0 p-8 w-full z-20">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-600 text-white text-xs font-bold uppercase rounded-full mb-4">
+                    <Award className="w-3 h-3" />
+                    {project.cat}
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+                {project.desc && (
+                    <p className="text-gray-300 text-base mb-4 line-clamp-2">{project.desc}</p>
+                )}
+                <div className="flex items-center gap-2 text-red-500 text-sm font-bold tracking-wide uppercase">
+                    <MapPin className="w-4 h-4" />
+                    {project.loc}
+                </div>
+            </div>
+
+            {/* Slide Indicators */}
+            {project.images && project.images.length > 1 && (
+                <div className="absolute top-4 right-4 flex gap-1 z-20">
+                    {project.images.map((_: any, i: number) => (
+                        <div
+                            key={i}
+                            className={`h-1 rounded-full transition-all duration-300 shadow-sm ${i === index ? 'w-6 bg-red-600' : 'w-2 bg-white/50'}`}
+                        />
+                    ))}
+                </div>
+            )}
+        </motion.div>
+    )
+}
 
 export default function Home() {
     const { scrollY } = useScroll();
@@ -68,7 +150,7 @@ export default function Home() {
                         </h1>
 
                         <p className="text-lg md:text-xl mb-10 text-gray-300 leading-relaxed max-w-lg drop-shadow-md font-light">
-                            Ihr Spezialist für Sanitär, Heizung und Lüftung. Modernste Technik trifft auf erstklassiges Schweizer Handwerk.
+                            Moderne Lösungen für Sanitär, Heizung und Lüftung – Technik auf höchstem Niveau.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-5">
@@ -145,31 +227,265 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[
-                            { title: "Neu- und Umbau", icon: "01", desc: "Moderne Bäder und Küchen nach Mass." },
-                            { title: "Rohrreinigung", icon: "02", desc: "Effektive Lösungen gegen Verstopfungen." },
-                            { title: "Kalkschutz", icon: "03", desc: "Nachhaltiger Schutz für Ihre Geräte." },
-                            { title: "Reparaturen", icon: "04", desc: "Schnelle Hilfe bei Defekten." },
-                            { title: "Planung", icon: "05", desc: "Innovative Konzepte für Ihr Zuhause." },
-                            { title: "Wartung", icon: "06", desc: "Regelmässiger Service für Langlebigkeit." },
-                            { title: "Lüftung", icon: "07", desc: "Frische Luft für ein gesundes Klima." },
-                            { title: "Heizung", icon: "08", desc: "Energieeffiziente Wärmesysteme." },
-                            { title: "Notdienst", icon: "09", desc: "24/7 erreichbar für Notfälle." }
-                        ].map((service, i) => (
-                            <motion.div
-                                key={i}
-                                whileHover={{ y: -5 }}
-                                className="group p-8 bg-zinc-50 rounded-2xl hover:bg-black hover:text-white transition-all duration-300 border border-zinc-100 hover:border-red-600"
-                            >
-                                <div className="text-4xl font-black text-zinc-200 group-hover:text-red-600 mb-6 transition-colors font-mono">
-                                    {service.icon}
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* 1. Planung und Umbau */}
+                        <div className="relative bg-zinc-50 rounded-3xl p-8 md:p-12 border border-zinc-100 hover:border-red-600/30 transition-all duration-300 hover:shadow-xl group overflow-hidden">
+                            {/* Video Background */}
+                            <div className="absolute inset-0 z-0">
+                                <video
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                >
+                                    <source src="/G-SAN 2.mp4" type="video/mp4" />
+                                </video>
+                                <div className="absolute inset-0 bg-zinc-50/90 group-hover:bg-zinc-50/60 transition-colors duration-500 z-10"></div>
+                            </div>
+
+                            <div className="relative z-20">
+                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-red-600 shadow-sm group-hover:scale-110 transition-transform">
+                                    <PencilRuler className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-2xl font-bold mb-3 text-black group-hover:text-white transition-colors">{service.title}</h3>
-                                <p className="text-gray-500 group-hover:text-gray-400 transition-colors text-sm">{service.desc}</p>
-                                <div className="w-12 h-1 bg-red-600 mt-8 group-hover:w-full transition-all duration-500"></div>
-                            </motion.div>
-                        ))}
+                                <h3 className="text-3xl font-bold mb-6 text-black group-hover:text-black/90">Planung und Umbau</h3>
+                                <p className="text-gray-600 text-lg leading-relaxed group-hover:text-black font-medium transition-colors">
+                                    Von der Planung bis zur Umsetzung: Wir bieten professionelle Lösungen für Neubauten und Umbauprojekte, individuell und zuverlässig.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* 2. Badezimmersanierung */}
+                        <div className="relative bg-zinc-50 rounded-3xl p-8 md:p-12 border border-zinc-100 hover:border-red-600/30 transition-all duration-300 hover:shadow-xl group overflow-hidden">
+                            {/* Video Background */}
+                            <div className="absolute inset-0 z-0">
+                                <video
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                >
+                                    <source src="/G-SAN 1.mp4" type="video/mp4" />
+                                </video>
+                                <div className="absolute inset-0 bg-zinc-50/90 group-hover:bg-zinc-50/60 transition-colors duration-500 z-10"></div>
+                            </div>
+
+                            <div className="relative z-20">
+                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-red-600 shadow-sm group-hover:scale-110 transition-transform">
+                                    <Bath className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-3xl font-bold mb-2 text-black group-hover:text-black/90">Badezimmersanierung</h3>
+                                <h4 className="text-red-600 font-bold uppercase tracking-wider text-sm mb-6 group-hover:text-red-700">Sanitär, Heizung und Lüftung</h4>
+                                <p className="text-gray-600 text-lg leading-relaxed group-hover:text-black font-medium transition-colors">
+                                    Aus alt wird neu: Wir übernehmen sämtliche Arbeiten rund um Sanitär, Heizung und Lüftung bei Ihrer Badezimmersanierung – sauber, termingerecht und fachgerecht.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* 3. Wasserenthärtung (Large) */}
+                        <div className="md:col-span-2 bg-black text-white rounded-3xl overflow-hidden group min-h-[600px] border border-zinc-800 flex flex-col md:flex-row">
+
+                            <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
+                                <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center mb-8 text-white shadow-lg">
+                                    <Droplets className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-3xl font-bold mb-2">Wasserenthärtung &</h3>
+                                <h3 className="text-3xl font-bold mb-6 text-red-500">effektiver Kalkschutz</h3>
+                                <p className="text-zinc-400 text-lg leading-relaxed mb-6">
+                                    Weiches Wasser trägt entscheidend dazu bei, dass Haushaltsgeräte wie Boiler, Kaffeemaschinen sowie Wasch- und Spülmaschinen effizient arbeiten und ihre Lebensdauer deutlich verlängert wird.
+                                </p>
+                                <p className="text-zinc-400 text-lg leading-relaxed mb-6">
+                                    In enger Zusammenarbeit mit der <span className="text-white font-bold">BWT AQUA AG</span> bieten wir eine professionelle Analyse und fachgerechte Wartung.
+                                </p>
+                                <p className="text-white font-bold border-l-4 border-red-600 pl-4">
+                                    Möchten Sie wissen, wie hart Ihr Wasser ist? Gerne beraten wir Sie individuell.
+                                </p>
+                            </div>
+
+                            <div className="md:w-1/2 bg-zinc-900/50 p-8 md:p-12 flex flex-col justify-between border-l border-white/5">
+                                <div className="mb-8">
+                                    <h4 className="font-bold text-xl mb-6 flex items-center gap-2 text-white">
+                                        <CheckCircle className="w-5 h-5 text-red-500" /> Ihre Vorteile
+                                    </h4>
+                                    <ul className="space-y-4 text-zinc-300">
+                                        {[
+                                            "Effizienter und störungsfreier Betrieb Ihrer Haushaltsgeräte",
+                                            "Längere Lebensdauer dank zuverlässigem Kalkschutz",
+                                            "Reduzierter Verbrauch von Reinigungs- und Pflegemitteln",
+                                            "Weniger Kalkflecken auf Armaturen und Oberflächen",
+                                            "Spürbar angenehmeres Haut- und Haargefühl"
+                                        ].map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-red-600 mt-2.5 flex-shrink-0"></span>
+                                                <span className="text-sm">{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                {/* Image positioned below benefits */}
+                                <div className="relative h-64 w-full rounded-2xl overflow-hidden mt-auto group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-shadow duration-500">
+                                    <Image
+                                        src="/bwt-visual.jpg.jpg"
+                                        alt="BWT Wasserenthärtung"
+                                        fill
+                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 4. Service & Reparaturen */}
+                        <div className="md:col-span-2 bg-zinc-50 rounded-3xl p-8 md:p-12 border border-zinc-100 hover:border-red-600/30 transition-all duration-300 hover:shadow-xl group">
+                            <div className="grid md:grid-cols-2 gap-12 items-start">
+                                <div className="order-2 md:order-1">
+                                    <div className="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm">
+                                        <h4 className="font-bold text-xl mb-6 flex items-center gap-2 text-black">
+                                            <Wrench className="w-5 h-5 text-red-600" /> Unsere Leistungen
+                                        </h4>
+                                        <ul className="space-y-4 text-gray-600">
+                                            {[
+                                                "Schnelle und zuverlässige Hilfe bei Störungen",
+                                                "Fachgerechte Wartungs- und Instandhaltungsarbeiten",
+                                                "Individuelle Beratung direkt bei Ihnen vor Ort",
+                                                "Reparatur- und Servicearbeiten an Anlagen",
+                                                "Professionelle Abflussreinigung",
+                                                "Boiler-Entkalkung für maximale Effizienz"
+                                            ].map((item, i) => (
+                                                <li key={i} className="flex items-start gap-3">
+                                                    <CheckCircle className="w-5 h-5 text-red-100 text-red-600 mt-0.5 flex-shrink-0" />
+                                                    <span>{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="order-1 md:order-2">
+                                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-red-600 shadow-sm">
+                                        <Wrench className="w-8 h-8" />
+                                    </div>
+                                    <h3 className="text-3xl font-bold mb-6 text-black">Service & Reparaturen</h3>
+                                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                                        Ein reibungslos funktionierendes Sanitär-, Heizungs- und Lüftungssystem ist die Grundlage für Komfort. Sollte es zu einer Störung kommen, reagieren wir schnell und lösungsorientiert.
+                                    </p>
+                                    <p className="text-gray-600 text-lg leading-relaxed">
+                                        Unsere erfahrenen Fachkräfte begleiten Sie von der ersten Analyse bis zur nachhaltigen Umsetzung. Durch regelmässige Wartungen lassen sich Ausfälle frühzeitig vermeiden.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 5. Planung S/H/L */}
+                        <div className="bg-zinc-50 rounded-3xl p-8 md:p-12 border border-zinc-100 hover:border-red-600/30 transition-all duration-300 hover:shadow-xl">
+                            <Compass className="w-12 h-12 text-red-600 mb-6" />
+                            <h3 className="text-2xl font-bold mb-2 text-black">Planung</h3>
+                            <h4 className="text-gray-500 font-medium text-sm mb-6 uppercase tracking-wider">Sanitär, Heizung & Lüftung</h4>
+                            <p className="text-gray-600 mb-8">
+                                Wir planen Ihre Anlagen individuell, effizient und zukunftssicher. Optimale Funktion und Energieersparnis.
+                            </p>
+                            <ul className="space-y-3">
+                                {[
+                                    "Maßgeschneiderte Konzepte",
+                                    "Effizienter Energieeinsatz",
+                                    "Langlebige Anlagen",
+                                    "Transparente Kosten"
+                                ].map((item, i) => (
+                                    <li key={i} className="flex items-center gap-3 text-gray-700 font-medium text-sm">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-red-600"></div>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* 6. Wartung S/H/L */}
+                        <div className="bg-zinc-50 rounded-3xl p-8 md:p-12 border border-zinc-100 hover:border-red-600/30 transition-all duration-300 hover:shadow-xl">
+                            <RefreshCw className="w-12 h-12 text-red-600 mb-6" />
+                            <h3 className="text-2xl font-bold mb-2 text-black">Wartung</h3>
+                            <h4 className="text-gray-500 font-medium text-sm mb-6 uppercase tracking-wider">Sanitär, Heizung & Lüftung</h4>
+                            <p className="text-gray-600 mb-8">
+                                Mit unseren regelmässigen Wartungen sorgen wir dafür, dass Ihre Anlagen zuverlässig und effizient arbeiten.
+                            </p>
+                            <ul className="space-y-3">
+                                {[
+                                    "Maximale Zuverlässigkeit",
+                                    "Vorbeugung von Störungen",
+                                    "Längere Lebensdauer",
+                                    "Rundum-sorglos-Service"
+                                ].map((item, i) => (
+                                    <li key={i} className="flex items-center gap-3 text-gray-700 font-medium text-sm">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-red-600"></div>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* 7. Lüftung */}
+                        <div className="bg-black text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black z-0"></div>
+                            <div className="relative z-10">
+                                <Wind className="w-12 h-12 text-red-500 mb-6" />
+                                <h3 className="text-2xl font-bold mb-4">Lüftungssysteme</h3>
+                                <p className="text-zinc-400 mb-6">
+                                    Frische Luft, gesundes Raumklima. Wir planen, installieren und warten Ihre Lüftungsanlagen professionell.
+                                </p>
+                                <a href="#contact" className="text-red-500 font-bold uppercase text-sm tracking-wider hover:text-white transition-colors flex items-center gap-2">
+                                    Kontaktieren <ChevronDown className="w-4 h-4 -rotate-90" />
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* 8. Heizung */}
+                        <div className="bg-red-600 text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden group hover:bg-red-700 transition-colors">
+                            <div className="relative z-10">
+                                <Thermometer className="w-12 h-12 text-white mb-6" />
+                                <h3 className="text-2xl font-bold mb-4">Heizung</h3>
+                                <p className="text-red-100 mb-6 font-medium">
+                                    Wärme, Komfort und Effizienz. Wir sorgen dafür, dass Ihre Heizung effizient und störungsfrei arbeitet.
+                                </p>
+                                <a href="#contact" className="text-white font-bold uppercase text-sm tracking-wider hover:text-black transition-colors flex items-center gap-2">
+                                    Lösung finden <ChevronDown className="w-4 h-4 -rotate-90" />
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* 9. 24/7 Notdienst */}
+                        <div className="md:col-span-2 bg-zinc-950 text-white rounded-3xl p-8 md:p-12 border-2 border-red-600 relative overflow-hidden group shadow-2xl">
+                            {/* Pulse Effect Background */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-600/20 rounded-full blur-[100px] animate-pulse pointer-events-none"></div>
+
+                            <div className="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+                                <div className="flex-1 text-center md:text-left">
+                                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/20 border border-red-600 rounded-full text-red-500 font-bold tracking-wider text-xs mb-6 uppercase">
+                                        <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                                        Emergency
+                                    </div>
+                                    <h3 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
+                                        24/7 NOTDIENST <br />
+                                        <span className="text-red-600">WIR SIND SOFORT FÜR SIE DA</span>
+                                    </h3>
+                                    <p className="text-zinc-300 text-lg leading-relaxed mb-6">
+                                        Probleme mit Sanitär, Heizung oder Lüftung warten nicht – und wir auch nicht. Unser 24-Stunden-Notdienst steht Ihnen rund um die Uhr, 7 Tage die Woche zur Verfügung, um Störungen schnell, zuverlässig und professionell zu beheben.
+                                    </p>
+                                    <p className="text-white font-medium text-lg">
+                                        Schnelle Hilfe, kompetente Techniker und sofortige Lösungen – rufen Sie uns jetzt an!
+                                    </p>
+                                </div>
+
+                                <div className="flex-shrink-0">
+                                    <motion.a
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        href="tel:+41447683043"
+                                        className="group relative flex flex-col items-center justify-center w-64 h-64 bg-red-600 rounded-full border-4 border-red-500 shadow-[0_0_50px_rgba(220,38,38,0.5)] transition-all hover:shadow-[0_0_80px_rgba(220,38,38,0.7)] hover:bg-red-700"
+                                    >
+                                        <Phone className="w-16 h-16 text-white mb-2" />
+                                        <span className="text-2xl font-black text-white text-center">JETZT<br />ANRUFEN</span>
+                                    </motion.a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -192,67 +508,97 @@ export default function Home() {
                 <div className="flex overflow-x-auto pb-8 gap-6 px-4 md:px-12 snap-x snap-mandatory scrollbar-hide no-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {[
                         {
-                            title: "Luxus Badumbau",
-                            loc: "Zürichberg",
-                            img: "/project-bathroom.png",
-                            cat: "Sanitär"
+                            title: "EFH Oberligweg",
+                            loc: "Nürensdorf",
+                            images: ["/project-nuerensdorf.jpg.jpg", "/project-nuerensdorf.mp4.mp4"],
+                            cat: "Sanitär & Heizung",
+                            desc: "Sanitär- und Heizungsinstallationen"
                         },
                         {
-                            title: "Heizungssanierung",
-                            loc: "Winterthur",
-                            img: "/project-heating.png",
-                            cat: "Heizung"
+                            title: "Hotel Ibis Adliswil",
+                            loc: "Adliswil",
+                            images: ["/project-ibis.jpg.jpg"],
+                            cat: "Sanitär",
+                            desc: "23 Zimmer Nasszellensanierung"
                         },
                         {
-                            title: "Ind. Lüftungsanlage",
-                            loc: "Oerlikon",
-                            img: "/project-ventilation.png",
-                            cat: "Lüftung"
+                            title: "Im Römerquartier",
+                            loc: "Zofingen",
+                            images: ["/project-roemerquartier.jpg.jpg", "/project-roemerquartier-2.jpg.jpg"],
+                            cat: "Sanitär & Heizung",
+                            desc: "6 Wohnungen Sanitär- und Heizungssanierung"
                         },
                         {
-                            title: "Planung & Konzept",
-                            loc: "Glattpark",
-                            img: "/project-planning-real.jpg",
-                            cat: "Planung"
+                            title: "EFH Frickenstrasse 25",
+                            loc: "Dübendorf",
+                            images: ["/project-frickenstrasse.jpg.jpg"],
+                            cat: "Sanitär & Heizung",
+                            desc: "Nasszellen Sanierung und Kellerverteilung"
                         },
                         {
-                            title: "Serviceflotte",
-                            loc: "Schweizweit",
-                            img: "/fleet-van.jpg",
-                            cat: "Kundendienst"
+                            title: "Whg. Dachgeschoss Neudorfstrasse 9",
+                            loc: "Wädenswil",
+                            images: [
+                                "/project-waedenswil-1.jpg.jpg",
+                                "/project-waedenswil-2.jpg.jpg",
+                                "/project-waedenswil-3.jpg.jpg",
+                                "/project-waedenswil-4.jpg.jpg",
+                                "/project-waedenswil-5.jpg.jpg"
+                            ],
+                            cat: "Sanitär & Heizung",
+                            desc: "Sanitär und Heizung Sanierung"
                         },
                         {
-                            title: "Wellness Oase",
-                            loc: "Küsnacht",
-                            img: "/project-bathroom.png",
-                            cat: "Sanitär"
+                            title: "Haus im Falken Stadelhofen",
+                            loc: "Zürich",
+                            images: ["/project-falken-stadelhofen.jpg.jpg"],
+                            cat: "Sanitär Neubau",
+                            desc: "Mieterausbau 3. Obergeschoss Zahnarztpraxis"
                         },
+                        {
+                            title: "Landis+Gyr-Strasse 1",
+                            loc: "Zug",
+                            images: ["/project-landis-gyr.jpg.jpg"],
+                            cat: "Sanitär & Heizung",
+                            desc: "Komplette Nasszellensanierung"
+                        },
+                        {
+                            title: "WHG - Peteracher 2",
+                            loc: "Zumikon",
+                            images: ["/project-peteracher.jpg.jpg"],
+                            cat: "Sanitär & Heizung",
+                            desc: "Nasszellensanierung"
+                        },
+                        {
+                            title: "Klosterstrasse",
+                            loc: "Bergdietikon",
+                            images: ["/project-klosterstrasse.jpg.jpg"],
+                            cat: "Sanitär & Lüftung",
+                            desc: "Neubau - Aktuell"
+                        },
+                        {
+                            title: "3 Eigentumswohnungen",
+                            loc: "Thalwil",
+                            images: [
+                                "/project-thalwil-1.jpg.jpg",
+                                "/project-thalwil-2.jpg.jpg",
+                                "/project-thalwil-3.jpg.jpg",
+                                "/project-thalwil-4.jpg.jpg",
+                                "/project-thalwil-5.jpg.jpg"
+                            ],
+                            cat: "Sanitär Neubau",
+                            desc: "Neubauprojekt"
+                        },
+                        {
+                            title: "Brauerstrasse 29",
+                            loc: "Zürich",
+                            images: ["/project-brauerstrasse.jpg"],
+                            cat: "Sanitär",
+                            desc: "Ladenumbau"
+                        },
+                        // Placeholder for next projects
                     ].map((project, i) => (
-                        <motion.div
-                            key={i}
-                            whileHover={{ y: -10 }}
-                            className="min-w-[85vw] md:min-w-[400px] h-[500px] relative rounded-3xl overflow-hidden snap-center group cursor-pointer"
-                        >
-                            <Image
-                                src={project.img}
-                                alt={project.title}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-
-                            <div className="absolute bottom-0 left-0 p-8 w-full">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-600 text-white text-xs font-bold uppercase rounded-full mb-4">
-                                    <Award className="w-3 h-3" />
-                                    {project.cat}
-                                </div>
-                                <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
-                                <div className="flex items-center gap-2 text-gray-300 text-sm font-medium tracking-wide">
-                                    <MapPin className="w-4 h-4 text-red-500" />
-                                    {project.loc}
-                                </div>
-                            </div>
-                        </motion.div>
+                        <ProjectCard key={i} project={project} />
                     ))}
                 </div>
             </section>
@@ -279,12 +625,11 @@ export default function Home() {
                                     </div>
                                     <div>
                                         <h3 className="text-2xl font-bold">Ymron Gashi</h3>
-                                        <p className="text-red-500 font-bold tracking-widest text-xs uppercase mt-1">Geschäftsführer</p>
+                                        <p className="text-red-500 font-bold tracking-widest text-xs uppercase mt-1">Geschäftsführer und Inhaber</p>
                                     </div>
                                 </div>
                                 <p className="text-gray-400 mb-8 leading-relaxed">
-                                    Als Eidg. dipl. Projektleiter Gebäudetechnik steht er für Innovation und Nachhaltigkeit.
-                                    Seine Vision: Effiziente Systemlösungen für die Zukunft der Schweiz.
+                                    Als eidg. dipl. Projektleiter Gebäudetechnik treibt er Innovation und Nachhaltigkeit in der Gebäudetechnik voran. Seine Mission: smarte, effiziente Systeme, die heute schon die Gebäude von morgen gestalten.
                                 </p>
                                 <a href="mailto:info@g-san.ch" className="flex items-center gap-2 text-white hover:text-red-500 transition-colors font-bold uppercase text-sm">
                                     <Mail className="w-4 h-4" /> Kontakt
