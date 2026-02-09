@@ -517,7 +517,7 @@ export default function Home() {
                         {
                             title: "Hotel Ibis Adliswil",
                             loc: "Adliswil",
-                            images: ["/project-ibis.jpg.jpg", "/project-ibis.mp4"],
+                            images: ["/project-ibis.jpg.jpg", "/project-ibis.mp4.mp4"],
                             cat: "Sanitär",
                             desc: "23 Zimmer Nasszellensanierung"
                         },
