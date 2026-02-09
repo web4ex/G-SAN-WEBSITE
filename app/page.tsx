@@ -41,7 +41,7 @@ const ProjectCard = ({ project }: { project: any }) => {
                                 src={media}
                                 alt={project.title}
                                 fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                className={`object-cover transition-transform duration-700 group-hover:scale-110 ${i === 0 && project.rotateTitleImage ? 'rotate-90 scale-150' : ''}`}
                             />
                         )}
                     </div>
@@ -517,14 +517,22 @@ export default function Home() {
                         {
                             title: "Hotel Ibis Adliswil",
                             loc: "Adliswil",
-                            images: ["/project-ibis.jpg.jpg"],
+                            images: ["/project-ibis.jpg.jpg", "/project-ibis.mp4"],
                             cat: "Sanitär",
                             desc: "23 Zimmer Nasszellensanierung"
                         },
                         {
                             title: "Im Römerquartier",
                             loc: "Zofingen",
-                            images: ["/project-roemerquartier.jpg.jpg", "/project-roemerquartier-2.jpg.jpg"],
+                            rotateTitleImage: true,
+                            images: [
+                                "/project-roemerquartier.jpg.jpg",
+                                "/project-roemerquartier-2.jpg.jpg",
+                                "/project-roemerquartier-3.jpg.jpg",
+                                "/project-roemerquartier-4.jpg.jpg",
+                                "/project-roemerquartier-5.jpg.jpg",
+                                "/project-roemerquartier-6.jpg.jpg"
+                            ],
                             cat: "Sanitär & Heizung",
                             desc: "6 Wohnungen Sanitär- und Heizungssanierung"
                         },
@@ -903,9 +911,6 @@ export default function Home() {
                             <div className="flex flex-col gap-4">
                                 <div className="bg-white p-4 rounded-lg hover:scale-105 transition-transform duration-300 w-fit">
                                     <Image src="/logo-suissetec-v2.png" alt="Suissetec Mitglied" width={160} height={60} className="w-32 h-auto object-contain" />
-                                </div>
-                                <div className="bg-white p-4 rounded-lg hover:scale-105 transition-transform duration-300 w-fit">
-                                    <Image src="/logo-svgw.png" alt="SVGW Mitglied" width={160} height={60} className="w-32 h-auto object-contain" />
                                 </div>
                             </div>
                         </div>
