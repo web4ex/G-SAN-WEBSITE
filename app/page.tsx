@@ -385,7 +385,7 @@ export default function Home() {
                             </p>
                             <ul className="space-y-3">
                                 {[
-                                    "Maßgeschneiderte Konzepte",
+                                    "Massgeschneiderte Konzepte",
                                     "Effizienter Energieeinsatz",
                                     "Langlebige Anlagen",
                                     "Transparente Kosten"
