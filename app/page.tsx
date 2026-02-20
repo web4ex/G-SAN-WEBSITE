@@ -224,7 +224,7 @@ export default function Home() {
                 </div>
 
                 <div className="container mx-auto px-4">
-                    <div className="relative w-full max-w-5xl mx-auto aspect-[16/9] bg-white rounded-3xl shadow-xl border border-zinc-200 overflow-hidden">
+                    <div className="relative w-full max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-white rounded-3xl shadow-xl border border-zinc-200 overflow-hidden">
                         {/* Map Background - OpenStreetMap Embed (Clear View) */}
                         <div className="absolute inset-0 bg-zinc-50">
                             <iframe
@@ -242,7 +242,7 @@ export default function Home() {
 
                         {/* Interactive Pins - Aligned to BBox (5.9-10.5 Long, 45.8-47.8 Lat) */}
                         <div className="absolute inset-0 pointer-events-none">
-                            <div className="relative w-full h-full max-w-5xl mx-auto">
+                            <div className="relative w-full h-full">
                                 {[
                                     { name: "Zürich", top: "21.5%", left: "57.4%" },    // 47.37, 8.54
                                     { name: "Zug", top: "31.5%", left: "57.0%" },       // 47.17, 8.52
@@ -258,12 +258,12 @@ export default function Home() {
                                         style={{ top: loc.top, left: loc.left }}
                                     >
                                         <div className="relative flex flex-col items-center">
-                                            {/* Pin Pulse - Google Red Type */}
-                                            <div className="w-4 h-4 bg-[#EA4335] rounded-full shadow-[0_0_15px_rgba(234,67,53,0.6)] animate-pulse relative z-10 group-hover:scale-125 transition-transform duration-300 border-2 border-white"></div>
-                                            <div className="absolute w-12 h-12 bg-[#EA4335]/20 rounded-full -top-4 -left-4 animate-ping opacity-75"></div>
+                                            {/* Pin Pulse - Google Red Type, responsive sizing */}
+                                            <div className="w-3 h-3 md:w-4 md:h-4 bg-[#EA4335] rounded-full shadow-[0_0_10px_rgba(234,67,53,0.6)] animate-pulse relative z-10 group-hover:scale-125 transition-transform duration-300 border-2 border-white"></div>
+                                            <div className="absolute w-8 h-8 md:w-12 md:h-12 bg-[#EA4335]/20 rounded-full -top-2.5 -left-2.5 md:-top-4 md:-left-4 animate-ping opacity-75"></div>
 
-                                            {/* Label Tooltip */}
-                                            <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 bg-white text-black text-xs font-bold px-3 py-1.5 rounded-lg whitespace-nowrap shadow-lg z-20 border border-gray-100">
+                                            {/* Label Tooltip - responsive font size */}
+                                            <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 bg-white text-black text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 md:py-1.5 rounded-lg whitespace-nowrap shadow-lg z-20 border border-gray-100">
                                                 {loc.name}
                                                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1 w-2 h-2 bg-white rotate-45"></div>
                                             </div>
