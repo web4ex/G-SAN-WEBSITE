@@ -110,7 +110,7 @@ export default function Home() {
             </nav>
 
             {/* HERO SECTION WITH BACKGROUND VIDEO - RED/BLACK THEME */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+            <section className="relative min-h-screen md:h-screen flex items-center justify-center overflow-hidden bg-black pb-32 md:pb-0">
                 {/* Video Background */}
                 <div className="absolute inset-0 z-0">
                     <video
@@ -153,21 +153,21 @@ export default function Home() {
                             Moderne Lösungen für Sanitär, Heizung und Lüftung – Technik auf höchstem Niveau.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-5">
+                        <div className="flex flex-col sm:flex-row gap-5 mb-12 sm:mb-0">
                             <motion.a
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 href="tel:+41447683043"
-                                className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-lg transition-all shadow-[0_0_30px_rgba(220,38,38,0.4)] flex items-center justify-center gap-2"
+                                className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold text-lg transition-all shadow-[0_0_30px_rgba(220,38,38,0.4)] flex items-center justify-center gap-2 whitespace-nowrap"
                             >
                                 <Phone className="w-5 h-5" />
                                 24/7 Notdienst
                             </motion.a>
                             <motion.a
-                                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
+                                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
                                 whileTap={{ scale: 0.95 }}
                                 href="#services"
-                                className="px-8 py-4 bg-transparent text-white rounded-full font-bold text-lg transition-all border border-white/30 hover:border-white hover:bg-white hover:text-black flex items-center justify-center backdrop-blur-sm"
+                                className="px-8 py-4 bg-transparent text-white rounded-full font-bold text-lg transition-all border border-white/30 hover:border-white hover:bg-white/10 flex items-center justify-center backdrop-blur-sm whitespace-nowrap"
                             >
                                 Lösungen entdecken
                             </motion.a>
