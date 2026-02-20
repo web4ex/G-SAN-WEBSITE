@@ -203,7 +203,7 @@ export default function Home() {
                                 <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6 text-red-600 group-hover:scale-110 transition-transform duration-300 relative z-10">
                                     <item.icon className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-base xl:text-lg font-bold mb-3 text-black group-hover:text-red-700 transition-colors relative z-10 whitespace-nowrap">{item.title}</h3>
+                                <h3 className="text-lg xl:text-xl font-bold mb-3 text-black group-hover:text-red-700 transition-colors relative z-10 leading-tight">{item.title}</h3>
                                 <p className="text-gray-500 text-base leading-relaxed relative z-10">{item.desc}</p>
                             </motion.div>
                         ))}
