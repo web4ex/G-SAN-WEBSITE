@@ -12,25 +12,26 @@ export default function ContactWidget() {
         message: ''
     })
 
+    const [isSuccess, setIsSuccess] = useState(false)
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
-        // Construct mailto link
-        const subject = encodeURIComponent(`Kontaktanfrage von ${formData.name}`)
-        const body = encodeURIComponent(
-            `Name: ${formData.name}\n` +
-            `Telefon: ${formData.phone}\n\n` +
-            `Nachricht:\n${formData.message}`
-        )
+        const subject = `Kontaktanfrage von ${formData.name}`
+        const body = `Name: ${formData.name}\nTelefon: ${formData.phone}\n\nNachricht:\n${formData.message}`
 
-        // Open default email client
-        window.location.href = `mailto:info@g-san.ch?subject=${subject}&body=${body}`
+        const mailtoUrl = `mailto:info@g-san.ch?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
-        // Close widget shortly after
-        setTimeout(() => {
-            setIsOpen(false)
-            setFormData({ name: '', phone: '', message: '' })
-        }, 1000)
+        // Use a small delay before showing success to ensure the browser has time to handle the mailto redirect
+        window.location.href = mailtoUrl
+
+        setIsSuccess(true)
+    }
+
+    const resetWidget = () => {
+        setIsSuccess(false)
+        setIsOpen(false)
+        setFormData({ name: '', phone: '', message: '' })
     }
 
     return (
@@ -63,7 +64,7 @@ export default function ContactWidget() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onClick={() => setIsOpen(false)}
+                            onClick={resetWidget}
                             className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-auto md:bg-transparent md:backdrop-blur-none"
                         />
 
@@ -80,7 +81,7 @@ export default function ContactWidget() {
                                     <span className="font-bold text-lg">Kontaktanfrage</span>
                                 </div>
                                 <button
-                                    onClick={() => setIsOpen(false)}
+                                    onClick={resetWidget}
                                     className="p-1 hover:bg-white/20 rounded-full transition-colors"
                                 >
                                     <X className="w-5 h-5" />
@@ -89,65 +90,93 @@ export default function ContactWidget() {
 
                             {/* Body */}
                             <div className="p-6 overflow-y-auto bg-slate-50">
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <p className="text-sm text-gray-500 mb-4">
-                                        Füllen Sie die Details aus – wir öffnen Ihre E-Mail-App für den Versand.
-                                    </p>
-
-                                    <div>
-                                        <div className="relative">
-                                            <User className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                                            <input
-                                                type="text"
-                                                required
-                                                placeholder="Ihr Name *"
-                                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-sm bg-white"
-                                                value={formData.name}
-                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            />
+                                {isSuccess ? (
+                                    <div className="text-center py-8">
+                                        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Send className="w-8 h-8" />
                                         </div>
+                                        <h3 className="text-xl font-bold text-green-700 mb-2">E-Mail App gestartet!</h3>
+                                        <p className="text-gray-600 mb-6">
+                                            Falls sich Ihr E-Mail-Programm nicht automatisch geöffnet hat, klicken Sie bitte erneut auf den Button unten.
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                const subject = `Kontaktanfrage von ${formData.name}`
+                                                const body = `Name: ${formData.name}\nTelefon: ${formData.phone}\n\nNachricht:\n${formData.message}`
+                                                window.location.href = `mailto:info@g-san.ch?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+                                            }}
+                                            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mb-4"
+                                        >
+                                            Erneut versuchen
+                                        </button>
+                                        <button
+                                            onClick={resetWidget}
+                                            className="text-gray-500 hover:text-black transition-colors font-medium text-sm"
+                                        >
+                                            Fenster schließen
+                                        </button>
                                     </div>
+                                ) : (
+                                    <form onSubmit={handleSubmit} className="space-y-4">
+                                        <p className="text-sm text-gray-500 mb-4">
+                                            Füllen Sie die Details aus – wir öffnen Ihre E-Mail-App für den Versand.
+                                        </p>
 
-                                    <div>
-                                        <div className="relative">
-                                            <Phone className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                                            <input
-                                                type="tel"
-                                                required
-                                                placeholder="Ihre Telefonnummer *"
-                                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-sm bg-white"
-                                                value={formData.phone}
-                                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                            />
+                                        <div>
+                                            <div className="relative">
+                                                <User className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    placeholder="Ihr Name *"
+                                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-sm bg-white"
+                                                    value={formData.name}
+                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        <div className="relative">
-                                            <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                                            <textarea
-                                                required
-                                                rows={4}
-                                                placeholder="Wie können wir helfen? *"
-                                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-sm resize-none bg-white"
-                                                value={formData.message}
-                                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                            />
+                                        <div>
+                                            <div className="relative">
+                                                <Phone className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                                                <input
+                                                    type="tel"
+                                                    required
+                                                    placeholder="Ihre Telefonnummer *"
+                                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-sm bg-white"
+                                                    value={formData.phone}
+                                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <button
-                                        type="submit"
-                                        className="w-full bg-black hover:bg-zinc-800 text-white font-bold py-3 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                                    >
-                                        <Send className="w-5 h-5" />
-                                        In E-Mail-App öffnen
-                                    </button>
+                                        <div>
+                                            <div className="relative">
+                                                <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                                                <textarea
+                                                    required
+                                                    rows={4}
+                                                    placeholder="Wie können wir helfen? *"
+                                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all text-sm resize-none bg-white"
+                                                    value={formData.message}
+                                                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
 
-                                    <p className="text-xs text-center text-gray-400 mt-2">
-                                        Dies öffnet Ihr Standard-E-Mail-Programm mit einer vorbereiteten Nachricht an info@g-san.ch.
-                                    </p>
-                                </form>
+                                        <button
+                                            type="submit"
+                                            className="w-full bg-black hover:bg-zinc-800 text-white font-bold py-3 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                                        >
+                                            <Send className="w-5 h-5" />
+                                            In E-Mail-App öffnen
+                                        </button>
+
+                                        <p className="text-xs text-center text-gray-400 mt-2">
+                                            Dies öffnet Ihr Standard-E-Mail-Programm mit einer vorbereiteten Nachricht an info@g-san.ch.
+                                        </p>
+                                    </form>
+                                )}
                             </div>
                         </motion.div>
                     </div>
