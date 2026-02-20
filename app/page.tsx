@@ -874,7 +874,7 @@ export default function Home() {
                                     <div className="flex items-center gap-6 mb-8">
                                         <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-200 shadow-xl">
                                             {/* Note: Ensure leandro-fereira.jpg is in the public folder */}
-                                            <Image src="/leandro-fereira.jpg.jpeg" alt="Leandro Fereira" fill className="object-cover object-left" />
+                                            <Image src="/leandro-fereira.jpg.jpeg" alt="Leandro Fereira" fill className="object-cover object-right" />
                                         </div>
                                         <div>
                                             <h3 className="text-2xl font-bold">Leandro Fereira</h3>
