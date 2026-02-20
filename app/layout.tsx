@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import CookieBanner from '../components/CookieBanner'
-import WhatsAppWidget from '../components/WhatsAppWidget'
+import ContactWidget from '../components/ContactWidget'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,7 +21,7 @@ export default function RootLayout({
             <body className={inter.className}>
                 {children}
                 <CookieBanner />
-                <WhatsAppWidget />
+                <ContactWidget />
             </body>
         </html>
     )
