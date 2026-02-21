@@ -243,25 +243,25 @@ export default function Home() {
                         <div className="absolute inset-0 pointer-events-none">
                             <div className="relative w-full h-full">
                                 {[
-                                    { name: "Zürich", top: "24.2%", left: "57.4%" },
-                                    { name: "Zug", top: "32.3%", left: "56.7%" },
-                                    { name: "Aargau", top: "23.5%", left: "46.7%" },
+                                    { name: "Zürich", top: "24.0%", left: "57.4%" },
+                                    { name: "Zug", top: "32.1%", left: "56.8%" },
+                                    { name: "Aargau", top: "23.4%", left: "46.6%" },
                                     { name: "Luzern", top: "36.5%", left: "52.4%" },
-                                    { name: "Schwyz", top: "37.7%", left: "59.8%" },
-                                    { name: "St. Gallen", top: "22.3%", left: "75.7%" },
-                                    { name: "Thurgau", top: "17.3%", left: "65.2%" },
+                                    { name: "Schwyz", top: "37.7%", left: "59.9%" },
+                                    { name: "St. Gallen", top: "22.2%", left: "75.5%" },
+                                    { name: "Thurgau", top: "17.0%", left: "65.0%" },
                                 ].map((loc, i) => (
                                     <div
                                         key={i}
-                                        className="absolute group cursor-pointer pointer-events-auto"
+                                        className="absolute group cursor-pointer pointer-events-auto -translate-x-1/2 -translate-y-1/2"
                                         style={{ top: loc.top, left: loc.left }}
                                     >
                                         <div className="relative flex flex-col items-center">
-                                            {/* Pin Pulse - Google Red Type, responsive sizing */}
-                                            <div className="w-3 h-3 md:w-4 md:h-4 bg-[#EA4335] rounded-full shadow-[0_0_10px_rgba(234,67,53,0.6)] animate-pulse relative z-10 group-hover:scale-125 transition-transform duration-300 border-2 border-white"></div>
-                                            <div className="absolute w-8 h-8 md:w-12 md:h-12 bg-[#EA4335]/20 rounded-full -top-2.5 -left-2.5 md:-top-4 md:-left-4 animate-ping opacity-75"></div>
+                                            {/* Pin Pulse - Centered on coordinate */}
+                                            <div className="w-4 h-4 bg-[#EA4335] rounded-full shadow-[0_0_15px_rgba(234,67,53,0.5)] animate-pulse relative z-10 group-hover:scale-125 transition-transform duration-300 border-2 border-white"></div>
+                                            <div className="absolute w-12 h-12 bg-[#EA4335]/20 rounded-full animate-ping opacity-75"></div>
 
-                                            {/* Label Tooltip - responsive font size */}
+                                            {/* Label Tooltip */}
                                             <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 bg-white text-black text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 md:py-1.5 rounded-lg whitespace-nowrap shadow-lg z-20 border border-gray-100">
                                                 {loc.name}
                                                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1 w-2 h-2 bg-white rotate-45"></div>
