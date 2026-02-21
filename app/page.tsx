@@ -224,8 +224,7 @@ export default function Home() {
                 </div>
 
                 <div className="container mx-auto px-4">
-                    <div className="relative w-full max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-white rounded-3xl shadow-xl border border-zinc-200 overflow-hidden">
-                        {/* Map Background - Tighter BBox for Northern/Eastern Switzerland */}
+                    <div className="relative w-full max-w-5xl mx-auto aspect-video bg-white rounded-3xl shadow-xl border border-zinc-200 overflow-hidden">
                         <div className="absolute inset-0 bg-zinc-50">
                             <iframe
                                 width="100%"
@@ -234,45 +233,29 @@ export default function Home() {
                                 scrolling="no"
                                 marginHeight={0}
                                 marginWidth={0}
-                                src="https://www.openstreetmap.org/export/embed.html?bbox=7.5,46.5,10.1,48.0&amp;layer=mapnik"
+                                src="https://www.openstreetmap.org/export/embed.html?bbox=5.9,45.4,10.5,48.0&amp;layer=mapnik"
                                 className="w-full h-full opacity-70 grayscale-[0.2] contrast-[1.05]"
                                 style={{ pointerEvents: 'none' }}
                             ></iframe>
                         </div>
 
-                        {/* Interactive Pins - Recalculated for new BBox and aspect ratios */}
+                        {/* Interactive Pins - Recalculated for Full Switzerland BBox at 16:9 */}
                         <div className="absolute inset-0 pointer-events-none">
                             <div className="relative w-full h-full">
                                 {[
-                                    { name: "Zürich", top: "42.0%", left: "40.0%", mTop: "43.8%" },
-                                    { name: "Zug", top: "54.8%", left: "39.2%", mTop: "56.0%" },
-                                    { name: "Aargau", top: "40.7%", left: "21.2%", mTop: "42.5%" },
-                                    { name: "Luzern", top: "63.3%", left: "31.2%", mTop: "65.0%" },
-                                    { name: "Schwyz", top: "65.3%", left: "44.2%", mTop: "67.0%" },
-                                    { name: "St. Gallen", top: "38.7%", left: "72.3%", mTop: "39.5%" },
-                                    { name: "Thurgau", top: "30.0%", left: "53.8%", mTop: "31.5%" },
+                                    { name: "Zürich", top: "24.2%", left: "57.4%" },
+                                    { name: "Zug", top: "32.3%", left: "56.7%" },
+                                    { name: "Aargau", top: "23.5%", left: "46.7%" },
+                                    { name: "Luzern", top: "36.5%", left: "52.4%" },
+                                    { name: "Schwyz", top: "37.7%", left: "59.8%" },
+                                    { name: "St. Gallen", top: "22.3%", left: "75.7%" },
+                                    { name: "Thurgau", top: "17.3%", left: "65.2%" },
                                 ].map((loc, i) => (
                                     <div
                                         key={i}
                                         className="absolute group cursor-pointer pointer-events-auto"
-                                        style={{
-                                            // Responsive positioning via CSS variables for clean Tailwind integration
-                                            /* @ts-ignore */
-                                            '--desktop-top': loc.top,
-                                            '--mobile-top': loc.mTop || loc.top,
-                                            left: loc.left
-                                        } as any}
+                                        style={{ top: loc.top, left: loc.left }}
                                     >
-                                        <style jsx>{`
-                                            .absolute {
-                                                top: var(--mobile-top);
-                                            }
-                                            @media (min-width: 768px) {
-                                                .absolute {
-                                                    top: var(--desktop-top);
-                                                }
-                                            }
-                                        `}</style>
                                         <div className="relative flex flex-col items-center">
                                             {/* Pin Pulse - Google Red Type, responsive sizing */}
                                             <div className="w-3 h-3 md:w-4 md:h-4 bg-[#EA4335] rounded-full shadow-[0_0_10px_rgba(234,67,53,0.6)] animate-pulse relative z-10 group-hover:scale-125 transition-transform duration-300 border-2 border-white"></div>
