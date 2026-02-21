@@ -233,8 +233,8 @@ export default function Home() {
                                 scrolling="no"
                                 marginHeight={0}
                                 marginWidth={0}
-                                src="https://www.openstreetmap.org/export/embed.html?bbox=7.6,46.8,9.55,47.9&amp;layer=mapnik"
-                                className="w-full h-full opacity-70 grayscale-[0.2] contrast-[1.05]"
+                                src="https://www.openstreetmap.org/export/embed.html?bbox=7.1,46.4,10.2,48.15&amp;layer=mapnik"
+                                className="w-full h-full opacity-80"
                                 style={{ pointerEvents: 'none' }}
                             ></iframe>
                         </div>
@@ -243,13 +243,13 @@ export default function Home() {
                         <div className="absolute inset-0 pointer-events-none">
                             <div className="relative w-full h-full">
                                 {[
-                                    { name: "Zürich", top: "48.1%", left: "48.2%" },
-                                    { name: "Zug", top: "67.3%", left: "46.6%" },
-                                    { name: "Aargau", top: "46.4%", left: "22.5%" },
-                                    { name: "Luzern", top: "77.3%", left: "35.9%" },
-                                    { name: "Schwyz", top: "80.0%", left: "53.8%" },
-                                    { name: "St. Gallen", top: "43.6%", left: "90.7%" },
-                                    { name: "Thurgau", top: "31.8%", left: "66.2%" },
+                                    { name: "Zürich", top: "44.2%", left: "46.5%" },
+                                    { name: "Zug", top: "56.2%", left: "45.7%" },
+                                    { name: "Aargau", top: "43.3%", left: "30.4%" },
+                                    { name: "Luzern", top: "62.8%", left: "39.0%" },
+                                    { name: "Schwyz", top: "64.5%", left: "50.1%" },
+                                    { name: "St. Gallen", top: "41.5%", left: "73.4%" },
+                                    { name: "Thurgau", top: "33.8%", left: "57.7%" },
                                 ].map((loc, i) => (
                                     <div
                                         key={i}
