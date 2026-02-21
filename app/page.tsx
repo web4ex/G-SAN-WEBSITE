@@ -243,13 +243,13 @@ export default function Home() {
                         <div className="absolute inset-0 pointer-events-none">
                             <div className="relative w-full h-full">
                                 {[
-                                    { name: "Zürich", top: "44.2%", left: "46.5%" },
-                                    { name: "Zug", top: "56.2%", left: "45.7%" },
-                                    { name: "Aargau", top: "43.3%", left: "30.4%" },
-                                    { name: "Luzern", top: "62.8%", left: "39.0%" },
-                                    { name: "Schwyz", top: "64.5%", left: "50.1%" },
-                                    { name: "St. Gallen", top: "41.5%", left: "73.4%" },
-                                    { name: "Thurgau", top: "33.8%", left: "57.7%" },
+                                    { name: "Zürich", top: "44.5%", left: "46.5%" },
+                                    { name: "Zug", top: "56.6%", left: "45.8%" },
+                                    { name: "Aargau", top: "43.4%", left: "30.3%" },
+                                    { name: "Luzern", top: "62.8%", left: "38.7%" },
+                                    { name: "Schwyz", top: "64.6%", left: "50.0%" },
+                                    { name: "St. Gallen", top: "41.7%", left: "73.2%" },
+                                    { name: "Thurgau", top: "34.3%", left: "57.7%" },
                                 ].map((loc, i) => (
                                     <div
                                         key={i}
